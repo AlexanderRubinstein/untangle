@@ -332,8 +332,15 @@ def wrap_model(  # noqa: C901
             module_type=module_type,
             module_name_regex=module_name_regex,
         )
-    elif model_wrapper_name == "shallow-ensemble":
-        wrapped_model = ShallowEnsembleWrapper(model=model, num_heads=num_heads)
+    elif "shallow-ensemble" in model_wrapper_name:
+        if "stoch-sum" in model_wrapper_name:
+            random_select = int(model_wrapper_name.split("-")[-1])
+        else:
+            random_select = None
+
+        wrapped_model = ShallowEnsembleWrapper(
+            model=model, num_heads=num_heads, random_select=random_select
+        )
     elif model_wrapper_name == "sngp":
         wrapped_model = SNGPWrapper(
             model=model,
