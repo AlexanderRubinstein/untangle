@@ -174,8 +174,13 @@ class DivDisLossWrapper(torch.nn.Module):
         # )
 
         # outputs = bootstrap_ensemble_outputs(outputs)
-        targets_values = targets.max(-1).indices
+        # targets_values = targets.max(-1).indices
+
+        targets_values = targets
+        assert len(targets_values.shape) == 1
+
         for output in outputs:
+            assert output.shape[0] == targets_values.shape[0]
             assert not torch.isnan(output).any(), "NaNs in outputs"
         # if unlabeled_outputs is not None:
         #     unlabeled_outputs = bootstrap_ensemble_outputs(unlabeled_outputs)
