@@ -72,6 +72,24 @@ def accuracy(
     ]
 
 
+def pds(probs: Tensor) -> Tensor:
+    """Computes the PDS of a probability distribution.
+
+    Args:
+        probs: The probability distribution tensor. Shape: [B, S, C],
+            B - batch size, S - models, C - number of classes.
+
+    Returns:
+        The PDS tensor. Shape: [B],
+            B - batch size.
+    """
+
+    max_by_model = probs.max(1).values
+    sum_over_classes = max_by_model.sum(-1)
+
+    return torch.Tensor(sum_over_classes)
+
+
 def entropy(probs: Tensor, dim: int = -1) -> Tensor:
     """Computes the entropy of a probability distribution.
 

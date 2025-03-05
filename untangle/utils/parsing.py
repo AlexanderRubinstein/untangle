@@ -62,6 +62,8 @@ def kwargs(string: str) -> dict[str, Any]:
     parsers = [ast.literal_eval, module]
     parse = partial(parse_value, parsers=parsers)
 
+    string = string.replace("@", " ") # to put @ instead of spaces in nested kwargs
+
     return {
         key: parse(value)
         for key, value in (pair.split("=", 1) for pair in string.split())

@@ -27,6 +27,7 @@ from untangle.utils import (
     coverage_for_accuracy,
     dempster_shafer_metric,
     entropy,
+    pds,
     excess_area_under_risk_coverage_curve,
     kl_divergence,
     multiclass_brier,
@@ -3274,6 +3275,9 @@ def convert_inference_dict_general(
 
     dual_bma = log_dual_bma.exp()
     converted_inference_dict["log_dual_bma"] = log_dual_bma
+
+    pds_score = pds(probs)
+    converted_inference_dict["pds"] = pds_score
 
     bma = probs.mean(dim=1)  # [B, C]
 

@@ -162,6 +162,7 @@ DISTRIBUTIONAL_METHODS = [
 EVIDENTIAL_METHODS = ["EDL", "PostNet"]
 
 ESTIMATOR_CONVERSION_DICT = {
+    "pds": r"$\text{PDS}$",
     "entropies_of_bma": r"$\text{PU}^\text{it}$",
     "expected_entropies": r"$\text{AU}^\text{it}$",
     "jensen_shannon_divergences": r"$\text{EU}^\text{it}$",
