@@ -1,3 +1,9 @@
+envs
+wandb
+experiments
+experiment_configs
+inputs
+
 # Extensions
 *.ipynb
 *.egg-info

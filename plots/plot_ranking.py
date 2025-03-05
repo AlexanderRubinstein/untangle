@@ -31,12 +31,16 @@ from utils import (
 )
 from wandb.wandb_run import Run
 
+
+SEPARATE_RUN_KEY = "RUN:"
+
+
 parser = argparse.ArgumentParser(description="Process run results for plotting")
 parser.add_argument("dataset", help="Dataset to use")
 parser.add_argument("ylabel", help="Label of the y axis")
 parser.add_argument("metric", help="Metric to be used in the analysis")
-parser.add_argument("--y-min", type=float, default=None, help="Minimum y value")
-parser.add_argument("--y-max", type=float, default=None, help="Maximum y value")
+parser.add_argument("--y-min", type=float, default=0, help="Minimum y value")
+parser.add_argument("--y-max", type=float, default=1.0, help="Maximum y value")
 parser.add_argument(
     "--labels-to-offset",
     nargs="*",
@@ -393,10 +397,17 @@ def plot_figures_for_dataset(
         if args.only_distributional and method not in DISTRIBUTIONAL_METHODS:
             continue
 
-        sweep = api.sweep(f"bmucsanyi/untangle/{sweep_id}")
+        if SEPARATE_RUN_KEY in sweep_id:
+            runs = [api.run(sweep_id.split(SEPARATE_RUN_KEY)[1])]
+        else:
+            sweep = api.sweep(f"bmucsanyi/untangle/{sweep_id}")
+            runs = sweep.runs
+
+        # sweep = api.sweep(f"bmucsanyi/untangle/{sweep_id}")
         metric_dict = defaultdict(list)
 
-        for run in sweep.runs:
+        # for run in sweep.runs:
+        for run in runs:
             if run.state != "finished":
                 continue
 
@@ -467,6 +478,14 @@ def main() -> None:
 
     id_to_method = ID_TO_METHOD[args.dataset]
     dataset_prefix_list = DATASET_PREFIX_LIST[args.dataset]
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
+    }
+
+    # id_to_method = {
+    #     "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
+    # } # tmp
 
     for prefix in dataset_prefix_list:
         plot_figures_for_dataset(

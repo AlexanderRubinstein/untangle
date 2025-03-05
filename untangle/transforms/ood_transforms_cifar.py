@@ -2,6 +2,7 @@
 
 import ctypes
 from io import BytesIO
+import os
 
 import cv2
 import numpy as np
@@ -38,9 +39,10 @@ ZOOM_BLUR_C = [
     np.arange(1, 1.26, 0.01),
 ]
 FOG_C = [(0.2, 3), (0.5, 3), (0.75, 2.5), (1, 2), (1.5, 1.75)]
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
 FROST_IMAGES = [
     cv2.resize(
-        cv2.imread(f"untangle/transforms/assets/frost{i}.{'png' if i <= 3 else 'jpg'}"),
+        cv2.imread(os.path.join(ASSETS_DIR, f"frost{i}.{'png' if i <= 3 else 'jpg'}")),
         (0, 0),
         fx=0.2,
         fy=0.2,
