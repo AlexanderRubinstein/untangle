@@ -12,6 +12,7 @@ from untangle.losses import (
     FBarCrossEntropyLoss,
     LossPredictionLoss,
     RegularizedUCELoss,
+    HDRLoss
 )
 
 
@@ -31,6 +32,9 @@ def create_loss_fn(args: argparse.Namespace, num_batches: int) -> nn.Module:
     # Setup loss function
     if args.loss == "cross-entropy":
         train_loss_fn = nn.CrossEntropyLoss()
+    elif "hdr" in args.loss:
+        lambda_hdr = float(args.loss.split("-")[1])
+        train_loss_fn = HDRLoss(lambda_hdr)
     elif args.loss == "bma-cross-entropy":
         train_loss_fn = BMACrossEntropyLoss()
     elif args.loss == "fbar-cross-entropy":

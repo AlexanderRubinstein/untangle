@@ -7,6 +7,7 @@ from .edl_loss import EDLLoss
 from .fbar_cross_entropy_loss import FBarCrossEntropyLoss
 from .loss_prediction_loss import LossPredictionLoss
 from .regularized_uce_loss import RegularizedUCELoss
+from .hdr_loss import HDRLoss
 
 __all__ = [
     "BMACrossEntropyLoss",
@@ -16,4 +17,5 @@ __all__ = [
     "FBarCrossEntropyLoss",
     "LossPredictionLoss",
     "RegularizedUCELoss",
+    "HDRLoss"
 ]
