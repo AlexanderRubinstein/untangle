@@ -789,6 +789,12 @@ group.add_argument(
     default=False,
     help="Log training and validation metrics to wandb",
 )
+group.add_argument(
+    "--dl_path",
+    type=str,
+    default=None,
+    help="Path to dataloaders",
+)
 
 
 def parse_args() -> argparse.Namespace:

@@ -110,10 +110,12 @@ def evaluate_on_ood_uniform_test_loaders(
                 f"Finished evaluating {name} - {ood_transform_type}. "
                 f"Took {time_eval:.2f} seconds."
             )
+            # break # tmp
         metrics[name]["avg"] = get_average_metric_values(per_ood_transform_type_metrics)
         metrics[name] |= get_per_transform_ood_detection_results(
             per_ood_transform_type_metrics
         )
+        # break # tmp
 
     # Summarize results
     flattened_metrics = flatten_ood_uniform_metrics(
@@ -178,6 +180,7 @@ def evaluate_on_ood_varied_test_loaders(
         logger.info(
             f"Finished evaluating {name} - varied. " f"Took {time_eval:.2f} seconds."
         )
+        # break # tmp
 
     # Summarize results
     flattened_metrics = flatten_ood_varied_metrics(
@@ -2275,6 +2278,7 @@ def forward_general_model_on_loader(
     gt_soft_labels: Tensor,
     gt_hard_labels: Tensor,
     gt_hard_labels_original: Tensor,
+    pds: Tensor,
 ) -> None:
     """Performs the forward pass of a general model on a data loader.
 
@@ -2329,6 +2333,7 @@ def forward_general_model_on_loader(
         gt_soft_labels: Tensor to store ground truth soft labels.
         gt_hard_labels: Tensor to store ground truth hard labels.
         gt_hard_labels_original: Tensor to store original ground truth hard labels.
+        pds: Tensor to store PDS values.
     """
     current_ind = 0
 
@@ -2392,6 +2397,7 @@ def forward_general_model_on_loader(
             dempster_shafer_values=dempster_shafer_values,
             expected_variances_of_probs=expected_variances_of_probs,
             expected_variances_of_logits=expected_variances_of_logits,
+            pds=pds,
         )
 
         if isinstance(model, BaseLossPredictionWrapper):
@@ -2519,6 +2525,7 @@ def forward_deep_ensemble_on_loader(
     gt_soft_labels: Tensor,
     gt_hard_labels: Tensor,
     gt_hard_labels_original: Tensor,
+    pds: Tensor,
 ) -> None:
     """Performs a forward pass of a deep ensemble model on a data loader.
 
@@ -2569,6 +2576,7 @@ def forward_deep_ensemble_on_loader(
         gt_hard_labels: Tensor to store ground truth hard labels.
         gt_hard_labels_original: Tensor to store original ground truth hard labels.
     """
+    # assert pds is not None, "Not implemented"
     temp_logits = torch.empty(
         num_samples, model.num_models, model.num_classes, device=storage_device
     )
@@ -2644,6 +2652,7 @@ def forward_deep_ensemble_on_loader(
             dempster_shafer_values=dempster_shafer_values,
             expected_variances_of_probs=expected_variances_of_probs,
             expected_variances_of_logits=expected_variances_of_logits,
+            pds=pds,
         )
 
         # GT containers
@@ -2950,6 +2959,8 @@ def get_bundle(
     estimates["expected_divergences"] = gt_epistemics_bregman
     jensen_shannon_divergences = torch.empty(num_samples, device=storage_device)
     estimates["jensen_shannon_divergences"] = jensen_shannon_divergences
+    pds = torch.empty(num_samples, device=storage_device)
+    estimates["pds"] = pds
 
     expected_variances_of_probs = torch.empty(num_samples, device=storage_device)
     estimates["expected_variances_of_probs"] = expected_variances_of_probs
@@ -3033,6 +3044,7 @@ def get_bundle(
             gt_soft_labels=gt_soft_labels,
             gt_hard_labels=gt_hard_labels,
             gt_hard_labels_original=gt_hard_labels_original,
+            pds=pds,
         )
     else:
         forward_general_model_on_loader(
@@ -3075,6 +3087,7 @@ def get_bundle(
             gt_soft_labels=gt_soft_labels,
             gt_hard_labels=gt_hard_labels,
             gt_hard_labels_original=gt_hard_labels_original,
+            pds=pds,
         )
 
     # Calculate correctness indicators
@@ -3335,6 +3348,7 @@ def update_logit_based(
     dempster_shafer_values: Tensor,
     expected_variances_of_probs: Tensor,
     expected_variances_of_logits: Tensor,
+    pds: Tensor,
 ) -> None:
     """Updates logit-based metrics and estimates.
 
@@ -3362,6 +3376,7 @@ def update_logit_based(
             probabilities.
         expected_variances_of_logits: Tensor to store expected variances of logits.
     """
+    pds[indices] = inference_dict["pds"]
     log_dual_bmas[indices] = inference_dict["log_dual_bma"]
     log_bmas[indices] = inference_dict["log_bma"]
     gt_epistemics_bregman[indices] = inference_dict["expected_divergence"]

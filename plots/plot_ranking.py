@@ -479,9 +479,18 @@ def main() -> None:
     id_to_method = ID_TO_METHOD[args.dataset]
     dataset_prefix_list = DATASET_PREFIX_LIST[args.dataset]
 
-    id_to_method |= {
-        "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
-    }
+    # id_to_method |= {
+    #     "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
+    # }
+
+    # id_to_method |= {
+    #     "RUN:suerte412/untangle/d8832o5f": "HDR 5 epochs",
+    # }
+
+    # id_to_method = {
+    #     "RUN:suerte412/untangle/d8832o5f": "HDR 5 epochs",
+    # } # tmp
+
 
     # id_to_method = {
     #     "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
@@ -491,6 +500,7 @@ def main() -> None:
         plot_figures_for_dataset(
             prefix=prefix, api=api, id_to_method=id_to_method, args=args
         )
+        # break # tmp
 
 
 if __name__ == "__main__":

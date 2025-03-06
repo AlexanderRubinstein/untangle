@@ -10,6 +10,7 @@ from functools import partial
 from math import ceil
 from pathlib import Path
 from typing import Any
+import os
 
 import torch
 from timm.optim import create_optimizer_v2
@@ -624,19 +625,47 @@ def main() -> None:
     )
     setup_compile(model, args)
 
-    (
-        train_loader,
-        id_eval_loader,
-        hard_id_eval_loader,
-        id_test_loader,
-        ood_uniform_test_loaders,
-        ood_varied_test_loaders,
-        varied_s2_eval_loader,
-    ) = create_loaders(
-        data_config=data_config,
-        args=args,
-        device=device,
-    )
+    if args.dl_path is not None and os.path.exists(args.dl_path):
+        print(f"FOR DEBUG: Loading dataloaders from {args.dl_path}")
+
+        (
+            train_loader,
+            id_eval_loader,
+            hard_id_eval_loader,
+            id_test_loader,
+            ood_uniform_test_loaders,
+            ood_varied_test_loaders,
+            varied_s2_eval_loader,
+        ) = torch.load(args.dl_path, weights_only=False)
+
+    else:
+
+        (
+            train_loader,
+            id_eval_loader,
+            hard_id_eval_loader,
+            id_test_loader,
+            ood_uniform_test_loaders,
+            ood_varied_test_loaders,
+            varied_s2_eval_loader,
+        ) = create_loaders(
+            data_config=data_config,
+            args=args,
+            device=device,
+        )
+        if args.dl_path is not None:
+            torch.save(
+                (
+                    train_loader,
+                    id_eval_loader,
+                    hard_id_eval_loader,
+                    id_test_loader,
+                    ood_uniform_test_loaders,
+                    ood_varied_test_loaders,
+                    varied_s2_eval_loader,
+                ),
+                args.dl_path,
+            )
 
     setup_wrapper(model, train_loader)
 
