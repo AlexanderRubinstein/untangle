@@ -460,6 +460,22 @@ def load_best_checkpoint(saver: CheckpointSaver, model: nn.Module) -> None:
     model.load_state_dict(state_dict, strict=True)
 
 
+def prune_dict(
+    dict: dict[str, float],
+    substrings_to_keep: list[str],
+) -> dict[str, float]:
+    """Prunes a dictionary of metrics to only include the specified substrings.
+
+    Args:
+        dict: The dictionary to prune.
+        substrings_to_keep: The substrings to keep in the dictionary.
+
+    Returns:
+        The pruned dictionary.
+    """
+    return {k: v for k, v in dict.items() if any(substring in k for substring in substrings_to_keep)}
+
+
 def test(
     num_epochs: int,
     model: nn.Module,
@@ -515,6 +531,11 @@ def test(
         varied_s2_eval_loader=varied_s2_eval_loader,
         args=args,
     )
+
+    if args.prune_ood_test_sets is not None:
+        severeties_to_keep = args.prune_ood_test_sets.split("_")
+        ood_uniform_test_loaders = prune_dict(ood_uniform_test_loaders, severeties_to_keep)
+        ood_varied_test_loaders = prune_dict(ood_varied_test_loaders, severeties_to_keep)
 
     best_test_metrics = evaluate_on_test_sets(
         model=model,

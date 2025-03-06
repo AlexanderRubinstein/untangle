@@ -83,7 +83,10 @@
                 "--initial-checkpoint-path",
                 "/mnt/lustre/work/oh/arubinstein17/github/untangle/checkpoints/20250306-002645-392847-untangle_resnet_50-224/checkpoint_last.pt",
                 "--dl_path",
-                "./imagenet_dataloaders.pt"
+                "./imagenet_dataloaders.pt",
+                "--only_ood_detection",
+                "--prune_ood_test_sets",
+                "s1_s5"
             ]
         }
     ]

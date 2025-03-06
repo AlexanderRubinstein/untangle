@@ -795,6 +795,17 @@ group.add_argument(
     default=None,
     help="Path to dataloaders",
 )
+group.add_argument(
+    "--only_ood_detection",
+    help="Whether to only run OOD detection",
+    action="store_true",
+)
+group.add_argument(
+    "--prune_ood_test_sets",
+    type=str,
+    default=None,
+    help="'_'-separated list of severities to keep in OOD test sets",
+)
 
 
 def parse_args() -> argparse.Namespace:

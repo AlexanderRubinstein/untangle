@@ -664,53 +664,54 @@ def evaluate_on_tasks(
             args=args,
         )
 
-    metrics |= evaluate_on_correctness_prediction(
-        estimates=estimates,
-        targets=targets,
-        is_soft_dataset=is_soft_dataset,
-        args=args,
-        is_soft_upstream_dataset=is_soft_upstream_dataset,
-    )
-    metrics |= evaluate_on_abstained_prediction(
-        estimates=estimates,
-        targets=targets,
-        is_soft_dataset=is_soft_dataset,
-        args=args,
-        is_soft_upstream_dataset=is_soft_upstream_dataset,
-    )
-    metrics |= evaluate_on_proper_scoring_and_calibration(
-        model=model,
-        estimates=estimates,
-        log_probs=log_probs,
-        targets=targets,
-        is_soft_dataset=is_soft_dataset,
-        args=args,
-        is_soft_upstream_dataset=is_soft_upstream_dataset,
-    )
-    metrics |= evaluate_on_bregman(
-        estimates=estimates,
-        targets=targets,
-        is_soft_dataset=is_soft_dataset,
-        args=args,
-        is_soft_upstream_dataset=is_soft_upstream_dataset,
-    )
-    metrics |= evaluate_on_correlation_of_estimators(
-        model=model,
-        estimates=estimates,
-        output_dir=output_dir,
-        save_prefix=save_prefix,
-        args=args,
-        is_soft_upstream_dataset=is_soft_upstream_dataset,
-    )
-    metrics |= evaluate_on_correlation_of_decompositions(
-        estimates=estimates,
-        targets=targets,
-        is_soft_dataset=is_soft_dataset,
-        output_dir=output_dir,
-        save_prefix=save_prefix,
-        args=args,
-        is_soft_upstream_dataset=is_soft_upstream_dataset,
-    )
+    if not args.only_ood_detection:
+        metrics |= evaluate_on_correctness_prediction(
+            estimates=estimates,
+            targets=targets,
+            is_soft_dataset=is_soft_dataset,
+            args=args,
+            is_soft_upstream_dataset=is_soft_upstream_dataset,
+        )
+        metrics |= evaluate_on_abstained_prediction(
+            estimates=estimates,
+            targets=targets,
+            is_soft_dataset=is_soft_dataset,
+            args=args,
+            is_soft_upstream_dataset=is_soft_upstream_dataset,
+        )
+        metrics |= evaluate_on_proper_scoring_and_calibration(
+            model=model,
+            estimates=estimates,
+            log_probs=log_probs,
+            targets=targets,
+            is_soft_dataset=is_soft_dataset,
+            args=args,
+            is_soft_upstream_dataset=is_soft_upstream_dataset,
+        )
+        metrics |= evaluate_on_bregman(
+            estimates=estimates,
+            targets=targets,
+            is_soft_dataset=is_soft_dataset,
+            args=args,
+            is_soft_upstream_dataset=is_soft_upstream_dataset,
+        )
+        metrics |= evaluate_on_correlation_of_estimators(
+            model=model,
+            estimates=estimates,
+            output_dir=output_dir,
+            save_prefix=save_prefix,
+            args=args,
+            is_soft_upstream_dataset=is_soft_upstream_dataset,
+        )
+        metrics |= evaluate_on_correlation_of_decompositions(
+            estimates=estimates,
+            targets=targets,
+            is_soft_dataset=is_soft_dataset,
+            output_dir=output_dir,
+            save_prefix=save_prefix,
+            args=args,
+            is_soft_upstream_dataset=is_soft_upstream_dataset,
+        )
 
     return metrics
 
