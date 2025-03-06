@@ -11,7 +11,7 @@ inputs
 *.pt
 *.zip
 *.txt
-*.json
+# *.json
 *.npz
 *.pdf
 

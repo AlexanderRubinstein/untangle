@@ -1,0 +1,90 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: plot_ranking.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./plots/plot_ranking.py",
+            "console": "integratedTerminal",
+            "args": [
+                // "--dataset",
+                "imagenet",
+                // "--ylabel",
+                "auroc",
+                // "--metric",
+                "auroc_oodness",
+            ]
+        },
+        {
+            "name": "Python Debugger: train.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--data-dir",
+                // "/host/scratch_local/datasets/ImageNet2012",
+                "/mnt/lustre/datasets/ImageNet2012",
+                "--soft-imagenet-label-dir",
+                "/mnt/lustre/work/oh/arubinstein17/cache/ImageNet-Real/reassessed-imagenet",
+                "--dataset",
+                "hard/imagenet",
+                "--dataset-id",
+                "soft/imagenet",
+                "--epochs",
+                // "50",
+                // to debug pds
+                "0",
+                "--eval-metric",
+                "id_eval_one_minus_max_probs_of_bma_auroc_hard_bma_correctness_original",
+                "--evaluate-on-test-sets",
+                "--img-size",
+                "224",
+                "--log-wandb",
+                "--loss",
+                // "bma-cross-entropy",
+                "hdr-0.1",
+                "--lr",
+                "0.008644189803748235",
+                "--mean",
+                "0.485,0.456,0.406",
+                "--method-name",
+                // "shallow-ensemble",
+                "shallow-ensemble-stoch-sum-2",
+                // "hdr-0.1",
+                "--model-name",
+                "untangle/resnet_50",
+                "--num-classes",
+                "1000",
+                "--num-heads",
+                "10",
+                "--opt",
+                "lamb",
+                "--pin-memory",
+                "--prefetcher",
+                "--pretrained",
+                "--reset-classifier",
+                "--sched-kwargs",
+                "sched=cosine@warmup_lr=0.0001@warmup_epochs=5",
+                "--seed",
+                "0",
+                // "--soft-imagenet-label-dir",
+                // "SLURM_TUE",
+                "--std",
+                "0.229,0.224,0.225",
+                "--test-split",
+                "val",
+                "--weight-decay",
+                "0.02",
+                "--initial-checkpoint-path",
+                "/mnt/lustre/work/oh/arubinstein17/untangle/checkpoints/20250306-002645-392847-untangle_resnet_50-224/checkpoint_last.pt"
+            ]
+        }
+    ]
+}
+
+// /host/mnt/lustre/work/oh/owl569/repos/untangle/train.py --accumulation-steps=16 --amp --amp-dtype=float16 --batch-size=128 --best-save-start-epoch=20 --channels-last --crop-pct=0.875 --data-dir=/host/scratch_local/datasets/ImageNet2012 --dataset=hard/imagenet --dataset-id=soft/imagenet --epochs=50 --eval-metric=id_eval_one_minus_max_probs_of_bma_auroc_hard_bma_correctness_original --evaluate-on-test-sets --img-size=224 --log-wandb --loss=bma-cross-entropy --lr=0.008644189803748235 --mean=0.485,0.456,0.406 --method-name=shallow-ensemble --model-name=untangle/resnet_50 --num-classes=1000 --num-heads=10 --opt=lamb --pin-memory --prefetcher --pretrained --reset-classifier --sched-kwargs="sched=cosine warmup_lr=0.0001 warmup_epochs=5" --seed=0 --soft-imagenet-label-dir=SLURM_TUE --std=0.229,0.224,0.225 --test-split=val --weight-decay=0.02
