@@ -509,6 +509,48 @@ def main() -> None:
         "RUN:suerte412/untangle/tnjz5yny": "5_10",
     }
 
+    ###
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/ldasl7tp": "2e-5_50_last",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/6njhdyqq": "0.5_50_last",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/ewnrq6ps": "5_50_last",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/ylhrtouk": "2e-5_50_best",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/tbuo5197": "0.5_50_best",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/01zffqoz": "5_50_best",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/4wwexs2x": "0.5_25_last",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/xir5qmwh": "5_25_last",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/92az7ey1": "0.5_25_best",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/t7kwlerk": "5_25_best",
+    }
+
     # id_to_method |= {
     #     "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
     # }
