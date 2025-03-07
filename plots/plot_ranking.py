@@ -62,6 +62,12 @@ parser.add_argument(
     action="store_true",
     help="Only plot distributional methods",
 )
+parser.add_argument(
+    "--prune_ood_test_sets",
+    type=str,
+    default=None,
+    help="'_'-separated list of severities to keep in OOD test sets",
+)
 
 
 def setup_plot_style() -> None:
@@ -479,6 +485,30 @@ def main() -> None:
     id_to_method = ID_TO_METHOD[args.dataset]
     dataset_prefix_list = DATASET_PREFIX_LIST[args.dataset]
 
+    id_to_method |= {
+        "RUN:suerte412/untangle/dgf28mvf": "2e05_5",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/4ijadomc": "0.5_5",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/n98ijaem": "5_5",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/hihglg0p": "2e-5_10",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/kvqzopw7": "0.5_10",
+    }
+
+    id_to_method |= {
+        "RUN:suerte412/untangle/tnjz5yny": "5_10",
+    }
+
     # id_to_method |= {
     #     "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
     # }
@@ -495,6 +525,10 @@ def main() -> None:
     # id_to_method = {
     #     "RUN:suerte412/untangle/c7tm867n": "Shallow Ens. Reproduced",
     # } # tmp
+
+    if args.prune_ood_test_sets is not None:
+        severeties_to_keep = args.prune_ood_test_sets.split("_")
+        dataset_prefix_list = prune_list(dataset_prefix_list, severeties_to_keep)
 
     for prefix in dataset_prefix_list:
         plot_figures_for_dataset(
@@ -502,6 +536,15 @@ def main() -> None:
         )
         # break # tmp
 
+
+def prune_list(list: list[str], severities_to_keep: list[str]) -> list[str]:
+    """Prunes the list of dataset prefixes to only include the specified severities.
+
+    Args:
+        list: The list of dataset prefixes to prune.
+        severities_to_keep: The severities to keep in the list.
+    """
+    return [prefix for prefix in list if any(severity in prefix for severity in severities_to_keep)]
 
 if __name__ == "__main__":
     main()

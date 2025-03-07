@@ -81,6 +81,15 @@ def evaluate_on_ood_uniform_test_loaders(
     """
     metrics = {}
 
+    # # tmp
+    # import copy
+    # new_loaders = copy.deepcopy(loaders)
+    # for key in loaders:
+    #     for key2 in loaders[key]:
+    #         if "frost" != key2:
+    #             new_loaders[key].pop(key2)
+    # loaders = new_loaders # tmp
+
     for name, loader_subset in loaders.items():
         metrics[name] = {}
         per_ood_transform_type_metrics = {}

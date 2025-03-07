@@ -17,6 +17,8 @@
                 "auroc",
                 // "--metric",
                 "auroc_oodness",
+                "--prune_ood_test_sets",
+                "s1_s5"
             ]
         },
         {
@@ -25,37 +27,106 @@
             "request": "launch",
             "program": "./train.py",
             "console": "integratedTerminal",
-            "args": [
+            "args":
+            // [
+            //     "--data-dir",
+            //     // "/host/scratch_local/datasets/ImageNet2012",
+            //     "/mnt/lustre/datasets/ImageNet2012",
+            //     "--soft-imagenet-label-dir",
+            //     // "/mnt/lustre/work/oh/arubinstein17/cache/ImageNet-Real/reassessed-imagenet",
+            //     "/home/oh/arubinstein17/github/untangle/checkpoints/20250306-061727-319625-untangle_resnet_50-224/checkpoint_last.pt",
+            //     "--dataset",
+            //     "hard/imagenet",
+            //     "--dataset-id",
+            //     "soft/imagenet",
+            //     "--epochs",
+            //     // "50",
+            //     // to debug pds
+            //     "0",
+            //     "--eval-metric",
+            //     "id_eval_one_minus_max_probs_of_bma_auroc_hard_bma_correctness_original",
+            //     "--evaluate-on-test-sets",
+            //     "--img-size",
+            //     "224",
+            //     "--log-wandb",
+            //     "--loss",
+            //     // "bma-cross-entropy",
+            //     "hdr-0.1",
+            //     "--lr",
+            //     "0.008644189803748235",
+            //     "--mean",
+            //     "0.485,0.456,0.406",
+            //     "--method-name",
+            //     "shallow-ensemble",
+            //     // "shallow-ensemble-stoch-sum-2",
+            //     // "hdr-0.1",
+            //     "--model-name",
+            //     "untangle/resnet_50",
+            //     "--num-classes",
+            //     "1000",
+            //     "--num-heads",
+            //     "10",
+            //     "--opt",
+            //     "lamb",
+            //     "--pin-memory",
+            //     "--prefetcher",
+            //     "--pretrained",
+            //     "--reset-classifier",
+            //     "--sched-kwargs",
+            //     "sched=cosine@warmup_lr=0.0001@warmup_epochs=5",
+            //     "--seed",
+            //     "0",
+            //     // "--soft-imagenet-label-dir",
+            //     // "SLURM_TUE",
+            //     "--std",
+            //     "0.229,0.224,0.225",
+            //     "--test-split",
+            //     "val",
+            //     "--weight-decay",
+            //     "0.02",
+            //     "--initial-checkpoint-path",
+            //     "/mnt/lustre/work/oh/arubinstein17/github/untangle/checkpoints/20250306-002645-392847-untangle_resnet_50-224/checkpoint_last.pt",
+            //     "--dl_path",
+            //     "./imagenet_dataloaders.pt",
+            //     "--only_ood_detection",
+            //     "--prune_ood_test_sets",
+            //     "s1_s5"
+            // ],
+                //             --data-dir=/mnt/lustre/datasets/ImageNet2012 --dataset=hard/imagenet
+    // --dataset-id=soft/imagenet --epochs=0
+    // --eval-metric=id_eval_one_minus_max_probs_of_bma_auroc_hard_bma_correctness_original
+    // --img-size=224
+    // --initial-checkpoint-path=/home/oh/arubinstein17/github/untangle/checkpoints/20250306-061727-319625-untangle_resnet_50-224/checkpoint_last.pt
+    // --loss=hdr-0.00002 --lr=0.017 --mean=0.485,0.456,0.406
+    // --method-name=shallow-ensemble --model-name=untangle/resnet_50
+    // --num-classes=1000 --num-heads=10 --opt=lamb --prune_ood_test_sets=s1_s5
+    // --sched-kwargs='sched=cosine warmup_lr=0.0001 warmup_epochs=5' --seed=0
+    // --soft-imagenet-label-dir=/mnt/lustre/work/oh/arubinstein17/cache/ImageNet-Real/reassessed-imagenet
+    // --std=0.229,0.224,0.225 --test-split=val --weight-decay=0.02
+    // --only_ood_detection
+            [
                 "--data-dir",
-                // "/host/scratch_local/datasets/ImageNet2012",
                 "/mnt/lustre/datasets/ImageNet2012",
-                "--soft-imagenet-label-dir",
-                "/mnt/lustre/work/oh/arubinstein17/cache/ImageNet-Real/reassessed-imagenet",
                 "--dataset",
                 "hard/imagenet",
                 "--dataset-id",
                 "soft/imagenet",
                 "--epochs",
-                // "50",
-                // to debug pds
                 "0",
                 "--eval-metric",
                 "id_eval_one_minus_max_probs_of_bma_auroc_hard_bma_correctness_original",
-                "--evaluate-on-test-sets",
                 "--img-size",
                 "224",
-                "--log-wandb",
+                "--initial-checkpoint-path",
+                "/home/oh/arubinstein17/github/untangle/checkpoints/20250306-061727-319625-untangle_resnet_50-224/checkpoint_last.pt",
                 "--loss",
-                // "bma-cross-entropy",
-                "hdr-0.1",
+                "hdr-0.00002",
                 "--lr",
-                "0.008644189803748235",
+                "0.017",
                 "--mean",
                 "0.485,0.456,0.406",
                 "--method-name",
-                // "shallow-ensemble",
-                "shallow-ensemble-stoch-sum-2",
-                // "hdr-0.1",
+                "shallow-ensemble",
                 "--model-name",
                 "untangle/resnet_50",
                 "--num-classes",
@@ -72,24 +143,21 @@
                 "sched=cosine@warmup_lr=0.0001@warmup_epochs=5",
                 "--seed",
                 "0",
-                // "--soft-imagenet-label-dir",
-                // "SLURM_TUE",
+                "--soft-imagenet-label-dir",
+                "/mnt/lustre/work/oh/arubinstein17/cache/ImageNet-Real/reassessed-imagenet",
                 "--std",
                 "0.229,0.224,0.225",
                 "--test-split",
                 "val",
                 "--weight-decay",
                 "0.02",
-                "--initial-checkpoint-path",
-                "/mnt/lustre/work/oh/arubinstein17/github/untangle/checkpoints/20250306-002645-392847-untangle_resnet_50-224/checkpoint_last.pt",
-                "--dl_path",
-                "./imagenet_dataloaders.pt",
                 "--only_ood_detection",
                 "--prune_ood_test_sets",
-                "s1_s5"
+                "s1_s5",
+                "--evaluate-on-test-sets",
+                "--dl_path",
+                "./imagenet_dataloaders.pt",
             ]
         }
     ]
 }
-
-// /host/mnt/lustre/work/oh/owl569/repos/untangle/train.py --accumulation-steps=16 --amp --amp-dtype=float16 --batch-size=128 --best-save-start-epoch=20 --channels-last --crop-pct=0.875 --data-dir=/host/scratch_local/datasets/ImageNet2012 --dataset=hard/imagenet --dataset-id=soft/imagenet --epochs=50 --eval-metric=id_eval_one_minus_max_probs_of_bma_auroc_hard_bma_correctness_original --evaluate-on-test-sets --img-size=224 --log-wandb --loss=bma-cross-entropy --lr=0.008644189803748235 --mean=0.485,0.456,0.406 --method-name=shallow-ensemble --model-name=untangle/resnet_50 --num-classes=1000 --num-heads=10 --opt=lamb --pin-memory --prefetcher --pretrained --reset-classifier --sched-kwargs="sched=cosine warmup_lr=0.0001 warmup_epochs=5" --seed=0 --soft-imagenet-label-dir=SLURM_TUE --std=0.229,0.224,0.225 --test-split=val --weight-decay=0.02
